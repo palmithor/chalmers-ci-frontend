@@ -1,5 +1,6 @@
 <template>
     <div class='container'>
+        <div v-if="getError">Unable to reach backend</div>
         <div style='flex: 1;'>
             <div class='input__div'>
                 <div class='input__wrapper'>
@@ -8,12 +9,12 @@
                 <div class='border'></div>
             </div>
 
-            <div class='todo-list'>
+            <div v-if="!getError" class='todo-list'>
                 <!-- Loop Over All Todos -->
-                   <TodoItem v-for='todo in todoList'
-                             :todo="todo"
-                             :key='todo.id'
-                             class='list'></TodoItem>
+                <TodoItem v-for='todo in todoList'
+                          :todo="todo"
+                          :key='todo.id'
+                          class='list'></TodoItem>
             </div>
         </div>
         <footer>
@@ -51,6 +52,10 @@ export default class TodoList extends Vue {
   // computed property
   get remaining() {
     return this.$store.getters.getNoneCompleted.length;
+  }
+
+  get getError() {
+    return this.$store.state.todo.error;
   }
 }
 </script>
