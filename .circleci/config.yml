@@ -78,52 +78,45 @@ jobs:
         name: Deployment
         command: gsutil rsync -R local-dir gs://ci-lecture-demo.tk
 
+  deploy_test:
+    docker:
+    - image: circleci/node:8.11.1-browsers
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+
     - run:
-        name: Invalidate Cloudfront
-        command: |
-          aws configure set preview.cloudfront true
-          aws configure set preview.create-invalidation true
-          aws cloudfront create-invalidation --distribution-id E28IHHXTX2DLBY --invalidation-batch "{\"Paths\":{\"Quantity\":1,\"Items\":[\"/*\"]},\"CallerReference\":\"$CIRCLE_BUILD_NUM\"}"
+        name: Install dependencies
+        command: yarn install
 
-deploy_test:
-  docker:
-  - image: circleci/node:8.11.1-browsers
-  steps:
-  - checkout
-  - restore_cache:
-      key: dependency-cache-{{ checksum "yarn.lock" }}
+    - save_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+        paths:
+        - node_modules
 
-  - run:
-      name: Install dependencies
-      command: yarn install
+    - run:
+        name: Build
+        command: yarn build
 
-  - save_cache:
-      key: dependency-cache-{{ checksum "yarn.lock" }}
-      paths:
-      - node_modules
+    - run:
+        name: Install GCloud
+        command: ./install_gcloud.sh
 
-  - run:
-      name: Build
-      command: yarn build
+    - run:
+        name: Store Service Account
+        command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key
 
-  - run:
-      name: Install GCloud
-      command: ./install_gcloud.sh
+    - run: |
+        sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+        sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+        sudo gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+        sudo gcloud --quiet components update
+        sudo gcloud init
 
-  - run:
-      name: Store Service Account
-      command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key
-
-  - run: |
-      sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-      sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-      sudo gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-      sudo gcloud --quiet components update
-      sudo gcloud init
-
-  - run:
-      name: Deployment
-      command: gsutil rsync -R local-dir gs://test.ci-lecture-demo.tk
+    - run:
+        name: Deployment
+        command: gsutil rsync -R local-dir gs://test.ci-lecture-demo.tk
 
 
 workflows:
@@ -132,7 +125,14 @@ workflows:
     jobs:
     - build
     - test
-    - deploy:
+    - deploy_production:
+        requires:
+        - build
+        - test
+        filters:
+          branches:
+            only: master
+    - deploy_test:
         requires:
         - build
         - test
