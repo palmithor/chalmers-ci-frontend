@@ -1,4 +1,4 @@
-import {TODO_LIST, ERROR, CREATE, UPDATE} from './mutation-types';
+import {TODO_LIST, ERROR, CREATE, UPDATE, LOADING} from './mutation-types';
 import {Todo} from "@/Models";
 import {TodoState} from "@/store/todo/index";
 
@@ -10,6 +10,10 @@ export default {
   },
   [ERROR](state: TodoState, payload: string) {
     state.error = payload;
+    state.loading = false;
+  },
+  [LOADING](state: TodoState, payload: boolean) {
+    state.loading = payload;
   },
   [UPDATE](state: TodoState, payload: Todo) {
     const index = state.list.findIndex((todo => todo.id == payload.id));
