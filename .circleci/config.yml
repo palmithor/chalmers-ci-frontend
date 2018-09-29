@@ -72,7 +72,6 @@ jobs:
         sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
         sudo gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
         sudo gcloud --quiet components update
-        sudo gcloud init
 
     - run:
         name: Deployment
@@ -112,7 +111,6 @@ jobs:
         sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
         sudo gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
         sudo gcloud --quiet components update
-        sudo gcloud init
 
     - run:
         name: Deployment
