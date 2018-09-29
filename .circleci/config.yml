@@ -41,9 +41,6 @@ jobs:
   deploy_prod:
     docker:
     - image: circleci/node:8.11.1-browsers
-      auth:
-        username: _json_key  # default username when using a JSON key file to authenticate
-        password: $GCLOUD_SERVICE_KEY  # JSON service account you created
     steps:
     - checkout
     - restore_cache:
@@ -71,8 +68,8 @@ jobs:
         command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 
     - run: |
-        sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-        sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+        gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+        gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
 
     - run:
         name: Deployment
@@ -81,9 +78,6 @@ jobs:
   deploy_test:
     docker:
     - image: circleci/node:8.11.1-browsers
-      auth:
-        username: _json_key  # default username when using a JSON key file to authenticate
-        password: $GCLOUD_SERVICE_KEY  # JSON service account you created
     steps:
     - checkout
     - restore_cache:
@@ -111,8 +105,8 @@ jobs:
         command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 
     - run: |
-        sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-        sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+        gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+        gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
 
     - run:
         name: Deployment
