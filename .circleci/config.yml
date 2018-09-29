@@ -57,7 +57,7 @@ jobs:
 
     - run:
         name: Build
-        command: yarn build
+        command: NODE_ENV=production yarn build
 
     - run:
         name: Install GCloud
@@ -97,7 +97,7 @@ jobs:
 
     - run:
         name: Build
-        command: yarn build
+        command: NODE_ENV=test yarn build
 
     - run:
         name: Install GCloud

@@ -4,7 +4,7 @@ import {Todo} from "@/Models";
 import axios, {AxiosResponse} from "axios";
 import {TodoState} from "@/store/todo/index";
 
-const baseUrl = process.env.NODE_ENV === "production" ? "https://chalmers-ci-backend.herokuapp.com" : "https://test-chalmers-ci-backend.herokuapp.com/";
+const baseUrl = process.env.NODE_ENV === "production" ? "https://gu-ci-backend.herokuapp.com" : "https://test-gu-ci-backend.herokuapp.com/";
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
