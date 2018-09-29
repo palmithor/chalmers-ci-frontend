@@ -61,7 +61,7 @@ jobs:
 
     - run:
         name: Install GCloud
-        command: ./install_gcloud.sh
+        command: sh ./install_gcloud.sh
 
     - run:
         name: Store Service Account
