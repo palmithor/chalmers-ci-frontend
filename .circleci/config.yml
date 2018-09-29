@@ -82,7 +82,7 @@ jobs:
 
     - run:
         name: Deployment
-        command: gsutil rsync -R local-dir gs://ci-lecture-demo.tk
+        command: gsutil rsync -R dist/* gs://ci-lecture-demo.tk
 
   deploy_test:
     docker:
@@ -123,7 +123,7 @@ jobs:
 
     - run:
         name: Deployment
-        command: gsutil rsync -R local-dir gs://test.ci-lecture-demo.tk
+        command: gsutil rsync -R dist/* gs://test.ci-lecture-demo.tk
 
 
 workflows:
