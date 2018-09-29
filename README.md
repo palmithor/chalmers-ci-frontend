@@ -1,4 +1,4 @@
-# chalmers-ci-frontend
+# gu-ci-frontend
 
 ## Project setup
 ```
