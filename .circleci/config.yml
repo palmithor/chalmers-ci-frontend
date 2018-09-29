@@ -38,7 +38,7 @@ jobs:
 
     - run: yarn test:unit
 
-  deploy_production:
+  deploy_test:
     docker:
     - image: circleci/node:8.11.1-browsers
     steps:
@@ -66,6 +66,14 @@ jobs:
     - run:
         name: Store Service Account
         command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+    - run:
+        name: Active service account
+        command: sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+    - run:
+        name: Set gcloud project id
+        command: sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
 
     - run: |
         sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
@@ -99,7 +107,7 @@ jobs:
 
     - run:
         name: Install GCloud
-        command: ./install_gcloud.sh && sudo gcloud --quiet components update
+        command: ./install_gcloud.sh
 
     - run:
         name: Store Service Account
