@@ -75,8 +75,12 @@ export default class TodoList extends Vue {
 
 footer {
   padding: 8px 15px;
-  background: #76dbae;
+  background: #004588;
   border-radius: 3px;
+}
+
+footer span {
+  color: white;
 }
 
 .error-text {
@@ -96,7 +100,7 @@ footer {
 }
 
 .todo-list .list:hover {
-  background: #f7fcfa;
+  background: #eaf5ff;
 }
 
 .todo-list .list {
@@ -108,21 +112,24 @@ footer {
 .input__div .input__wrapper input {
   height: 35px;
   background: 0 0;
-  border: none;
+  border: 1px solid #004588;
   color: #2c3e50;
   display: block;
   font-family: inherit;
   font-size: 16px;
   line-height: 16px;
   outline: 0;
-  padding: 0;
+  padding: 5px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
   position: relative;
   width: 100%;
   z-index: 1;
 }
 
 .input__div .border {
-  background: #42b983;
+  background: #004588;
   transition: all 0.18s;
   bottom: -1px;
   height: 2px;
@@ -170,7 +177,7 @@ footer {
 }
 
 .material-checkbox > input:checked {
-  background-color: #2196f3;
+  background-color: #004588;
 }
 
 .material-checkbox > input:disabled {
@@ -194,12 +201,12 @@ footer {
 }
 
 .material-checkbox > input:checked + span::before {
-  border-color: #41b883;
-  background-color: #41b883;
+  border-color: #004588;
+  background-color: #004588;
 }
 
 .material-checkbox > input:active + span::before {
-  border-color: #41b883;
+  border-color: #004588;
 }
 
 .material-checkbox > input:checked:active + span::before {

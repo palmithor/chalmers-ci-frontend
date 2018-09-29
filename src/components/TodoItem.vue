@@ -82,7 +82,7 @@ export default class TodoItem extends Vue {
 }
 
 .input__div .border {
-  background: #42b983;
+  background: #004588;
   transition: all 0.18s;
   bottom: -1px;
   height: 2px;
@@ -154,12 +154,12 @@ export default class TodoItem extends Vue {
 }
 
 .material-checkbox > input:checked + span::before {
-  border-color: #41b883;
-  background-color: #41b883;
+  border-color: #004588;
+  background-color: #004588;
 }
 
 .material-checkbox > input:active + span::before {
-  border-color: #41b883;
+  border-color: #004588;
 }
 
 .material-checkbox > input:checked:active + span::before {
