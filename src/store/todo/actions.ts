@@ -1,4 +1,4 @@
-import {TODO_LIST, UPDATE, ERROR, LOADING} from './mutation-types';
+import {TODO_LIST, UPDATE, ERROR, CREATE} from './mutation-types';
 import { Commit, Store } from 'vuex'
 import {Todo} from "@/Models";
 import axios, {AxiosResponse} from "axios";
@@ -21,6 +21,14 @@ export default {
       context.commit(TODO_LIST, todos.data)
     } else {
       context.commit(ERROR, todos.statusText)
+    }
+  },
+  async createTodo(context: { commit: Commit}, todoTitle: string) {
+    const todoResponse: AxiosResponse<Array<Todo>> = await axiosInstance.post('/todos', {title: todoTitle, completed: false});
+    if(todoResponse.status == 201) {
+      context.commit(CREATE, todoResponse.data)
+    } else {
+      context.commit(ERROR, todoResponse.statusText)
     }
   },
   async markComplete(context: { commit: Commit, state: TodoState }, todo: Todo) {

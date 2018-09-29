@@ -1,4 +1,4 @@
-import {TODO_LIST, ERROR, LOADING, UPDATE} from './mutation-types';
+import {TODO_LIST, ERROR, CREATE, UPDATE} from './mutation-types';
 import {Todo} from "@/Models";
 import {TodoState} from "@/store/todo/index";
 
@@ -7,9 +7,6 @@ export default {
     state.list = payload;
     state.loading = false;
     state.error = null;
-  },
-  [LOADING](state: TodoState) {
-    state.loading = true;
   },
   [ERROR](state: TodoState, payload: string) {
     state.error = payload;
@@ -20,5 +17,8 @@ export default {
       state.list[index] = payload
     }
     state.list = [...state.list]
+  },
+  [CREATE](state: TodoState, payload: Todo) {
+    state.list = [...state.list, ...[payload]]
   }
 };

@@ -37,7 +37,12 @@ export default class TodoList extends Vue {
     this.$store.dispatch("fetchAll");
   }
 
-  addTodo(): void {}
+  addTodo(): void {
+    if (this.todoInput.length > 0) {
+      this.$store.dispatch("createTodo", this.todoInput);
+      this.todoInput = "";
+    }
+  }
 
   get todoList(): Todo[] {
     return this.$store.state.todo.list;
