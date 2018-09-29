@@ -1,0 +1,135 @@
+version: 2
+jobs:
+  build:
+    docker:
+    - image: circleci/node:8.11.1-browsers
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+
+    - run:
+        name: Install dependencies
+        command: yarn install
+
+    - save_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+        paths:
+        - node_modules
+
+    - run: yarn build
+
+  test:
+    docker:
+    - image: circleci/node:8.11.1-browsers
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+
+    - run:
+        name: Install dependencies
+        command: yarn install
+
+    - save_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+        paths:
+        - node_modules
+
+    - run: yarn test:unit
+
+  deploy_prod:
+    docker:
+    - image: circleci/node:8.11.1-browsers
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+
+    - run:
+        name: Install dependencies
+        command: yarn install
+
+    - save_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+        paths:
+        - node_modules
+
+    - run:
+        name: Build
+        command: NODE_ENV=production yarn build
+
+    - run:
+        name: Install GCloud
+        command: ./install_gcloud.sh
+
+    - run:
+        name: Store Service Account
+        command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+    - run: |
+        gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+        gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+
+    - run:
+        name: Deployment
+        command: gsutil rsync -R -d ./dist gs://ci-lecture-demo.tk
+
+  deploy_test:
+    docker:
+    - image: circleci/node:8.11.1-browsers
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+
+    - run:
+        name: Install dependencies
+        command: yarn install
+
+    - save_cache:
+        key: dependency-cache-{{ checksum "yarn.lock" }}
+        paths:
+        - node_modules
+
+    - run:
+        name: Build
+        command: NODE_ENV=test yarn build
+
+    - run:
+        name: Install GCloud
+        command: ./install_gcloud.sh
+
+    - run:
+        name: Store Service Account
+        command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+    - run: |
+        gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+        gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+
+    - run:
+        name: Deployment
+        command: gsutil rsync -R ./dist gs://test.ci-lecture-demo.tk
+
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+    - build
+    - test
+    - deploy_prod:
+        requires:
+        - build
+        - test
+        filters:
+          branches:
+            only: master
+    - deploy_test:
+        requires:
+        - build
+        - test
+        filters:
+          branches:
+            only: develop
