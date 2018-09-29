@@ -61,11 +61,11 @@ jobs:
 
     - run:
         name: Install GCloud
-        command: sh ./install_gcloud.sh
+        command: ./install_gcloud.sh
 
     - run:
         name: Store Service Account
-        command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key
+        command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 
     - run: |
         sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
@@ -105,7 +105,7 @@ jobs:
 
     - run:
         name: Store Service Account
-        command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key
+        command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 
     - run: |
         sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
