@@ -56,8 +56,6 @@ body {
 
 img {
   display: block;
-  width: 80px;
-  height: 80px;
   margin: 0 auto 15px auto;
 }
 
