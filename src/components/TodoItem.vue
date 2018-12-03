@@ -2,7 +2,7 @@
     <div>
     <!-- Show Label -->
     <label class='material-checkbox'>
-        <input type='checkbox' v-model='todo.completed' @click.prevent="clickCheckBox()">
+        <input id="todoCheckBox" type='checkbox' v-model='todo.completed' @click.prevent="clickCheckBox()">
         <span></span>
     </label>
     <div class='text' :class='{completed: todo.completed}'>{{ todo.title }}</div>
@@ -82,7 +82,7 @@ export default class TodoItem extends Vue {
 }
 
 .input__div .border {
-  background: #004588;
+  background: #b3000c;
   transition: all 0.18s;
   bottom: -1px;
   height: 2px;
@@ -130,7 +130,7 @@ export default class TodoItem extends Vue {
 }
 
 .material-checkbox > input:checked {
-  background-color: #2196f3;
+  background-color: #cd000e;
 }
 
 .material-checkbox > input:disabled {
@@ -154,12 +154,12 @@ export default class TodoItem extends Vue {
 }
 
 .material-checkbox > input:checked + span::before {
-  border-color: #004588;
-  background-color: #004588;
+  border-color: #b3000c;
+  background-color: #b3000c;
 }
 
 .material-checkbox > input:active + span::before {
-  border-color: #004588;
+  border-color: #b3000c;
 }
 
 .material-checkbox > input:checked:active + span::before {

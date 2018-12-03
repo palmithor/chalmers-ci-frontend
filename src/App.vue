@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <img src="./assets/logo.png">
-        <p class="title">The todo list</p>
+        <p class="title">The Christmas todo list</p>
         <TodoList/>
     </div>
 </template>
@@ -26,7 +26,7 @@ export default class App extends Vue {}
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  color: #2c3e50;
+  color: #b3000c;
   font-family: Karla, sans-serif;
   font-size: 16px;
   margin: 0;
