@@ -14,6 +14,8 @@ describe("TodoItem.vue", () => {
     }});
     expect(wrapper.findAll('div').at(1).text()).toEqual("todo");
     expect(wrapper.findAll('div').at(1).classes()).toHaveLength(1);
+    // @ts-ignore
+    expect(wrapper.find('#todoCheckBox').element.checked).toEqual(true);
   });
 
   it("renders completed", () => {
@@ -27,5 +29,7 @@ describe("TodoItem.vue", () => {
       }});
     expect(wrapper.findAll('div').at(1).text()).toEqual("todo");
     expect(wrapper.findAll('div').at(1).classes()).toHaveLength(2);
+    // @ts-ignore
+    expect(wrapper.find('#todoCheckBox').element.checked).toEqual(true);
   });
 });
